@@ -10,8 +10,8 @@ import javax.swing.Timer;
 
 public class test{
     public static void main(String[] args){
-        TalkingClock clock = new TalkingClock(10000, true);
-        clock.start();
+        TalkingClock clock = new TalkingClock();
+        clock.start(2000, true);
 
         // Niech program działa dopóki użytkownik nie wciśnie przycisku OK
         JOptionPane.showMessageDialog(null, "Zamknąć program?");
@@ -20,35 +20,11 @@ public class test{
 }
 
 class TalkingClock{
-    private int interval;
-    private boolean beep;
-
-    /**
-     *
-     * @param interval odstęp czasu pomiędzy kolejnymi komunikatami (w milisekundach)
-     * @param beep wartość truee oznacza, że dźwięk ma być odtwarzany
-     */
-
-    public TalkingClock(int interval, boolean beep){
-        this.interval = interval;
-        this.beep = beep;
-    }
-
-
-    /**
-     * Włączanie zegara
-     */
-
-    public void start(){
-        ActionListener listener = new TimePrinter();
-        Timer t = new Timer(interval, listener);
+    public void start(int interval, boolean beep){
+        Timer t = new Timer(interval, event -> {
+            System.out.println("Kiedy usłyszysz dźwięk, będzie godzina " + new Date());
+            if (beep) Toolkit.getDefaultToolkit().beep();
+        });
         t.start();
-    }
-
-    public class TimePrinter implements ActionListener{
-        public void actionPerformed(ActionEvent event){
-            System.out.println("Kiedy usłyszysz dźwięk, będzie godzina " + new Date() );
-            if(beep) Toolkit.getDefaultToolkit().beep();
-        }
     }
 }
